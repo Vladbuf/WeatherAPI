@@ -7,7 +7,7 @@ A Python project that fetches live weather data for some Romanian cities, stores
 - Fetches live weather data (temperature, pressure, humidity) from the OpenWeatherMap API for a list of cities
 - Parses and cleans the JSON response
 - Stores the results in a local SQLite database with a timestamp for each reading
-- Designed to run daily to build up historical weather data over time
+- Designed to run daily to build up historical weather data over time (still WIP)
 
 ## Technologies used
 

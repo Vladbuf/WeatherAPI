@@ -84,7 +84,6 @@ for city in cities_RO:
     city_data = result.show_result()
     if city_data is not None:
         data.append(city_data)
-print(data)
 upload_data = [tuple(element.values()) for element in data]
 create_db()
 insert_db(upload_data)

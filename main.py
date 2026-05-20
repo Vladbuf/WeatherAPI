@@ -19,11 +19,13 @@ def create_db():
         CREATE TABLE IF NOT EXISTS weather_api(
                     ID INTEGER PRIMARY KEY NOT NULL,
                     city TEXT,
+                    country TEXT,
+                    weather_desc TEXT,
                     temperature REAL,
                     min_temperature REAL,
                     max_temperature REAL,
-                    pressure REAL,
-                    humidity REAL,
+                    pressure INTEGER,
+                    humidity INTEGER,
                     recorded_at TEXT)''')
         conn.commit()
         conn.close()
@@ -34,7 +36,7 @@ def insert_db(data_list):
     try:
         conn = sqlite3.connect('weatherapi_database.db')
         cursor = conn.cursor()
-        cursor.executemany("INSERT INTO weather_api (city, temperature, min_temperature, max_temperature, pressure, humidity, recorded_at) VALUES (?, ?, ?, ?, ?, ?, ?)", data_list)
+        cursor.executemany("INSERT INTO weather_api (city, country, weather_desc, temperature, min_temperature, max_temperature, pressure, humidity, recorded_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", data_list)
         conn.commit()
         conn.close()
     except sqlite3.Error as e:
@@ -56,9 +58,11 @@ class WeatherAPI:
     def json_parsing(self):
         self.response = self.get_result()
         if self.response:
-            keys_i_want = ['temp', 'temp_min', 'temp_max', 'pressure', 'humidity']
+            keys = ['temp', 'temp_min', 'temp_max', 'pressure', 'humidity']
             self.result = {'city': self.city}
-            self.result.update({key:self.response['main'][key] for key in keys_i_want})
+            self.result['country'] = self.response['sys']['country']
+            self.result['weather_desc'] = self.response['weather'][0]['description']
+            self.result.update({key:self.response['main'][key] for key in keys})
             time = datetime.datetime.now()
             self.date_today = time.strftime("%Y-%m-%d %H:%M:%S")
             self.result['recorded_at'] = self.date_today

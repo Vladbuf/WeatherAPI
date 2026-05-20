@@ -34,7 +34,7 @@ A Python project that fetches live weather data for some Romanian cities, stores
 
 ## Database
 
-Data is stored in `weatherapi_database.db` with the following fields: city, temperature, min/max temperature, pressure, humidity, and recorded timestamp.
+Data is stored in `weatherapi_database.db` with the following fields: city, country, weather_desc, temperature, min/max temperature, pressure, humidity, and recorded timestamp.
 
 ## Notes
 

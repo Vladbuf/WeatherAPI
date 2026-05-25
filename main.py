@@ -3,11 +3,8 @@ from dotenv import load_dotenv
 import os
 import datetime
 from weather_db import create_db, insert_db
+from geocoding import GeoCoding
 
-cities_RO = {"Iasi":{"lat": 47.151726, "lon": 27.587914}, 
-             "Bucuresti":{"lat":44.439663, "lon":26.096306},
-             "Brasov": {"lat": 45.657974, "lon":25.601198},
-             "Cluj-Napoca": {"lat": 46.770439, "lon":23.591423}}
 load_dotenv()
 api_key = os.environ.get('API_KEY')
 
@@ -43,6 +40,7 @@ class WeatherAPI:
         if self.result_list:
             print(f"""
                 City: {self.result_list['city']}
+                Country: {self.result_list['country']}
                 Temperature: {self.result_list['temp']} celsius
                 Minimum temp: {self.result_list['temp_min']} celsius
                 Maximum temp: {self.result_list['temp_max']}
@@ -52,11 +50,19 @@ class WeatherAPI:
             return self.result_list
 
 data = []
-for city in cities_RO:
-    result = WeatherAPI(city, cities_RO[city]['lat'], cities_RO[city]['lon'], api_key)
-    city_data = result.show_result()
-    if city_data is not None:
-        data.append(city_data)
+input_city = input("Please type the city: ")
+input_country = input("Please type the country code (eg. US, RO, FR, TR). This is optional, please press Enter to skip: ")
+input_country = input_country if input_country else None
+temp_coords = GeoCoding(input_city, input_country)
+coords = temp_coords.parsing()
+result = WeatherAPI(**coords, api= api_key)
+weather_data = result.show_result()
+if weather_data is not None:
+    data.append(weather_data)
 upload_data = [tuple(element.values()) for element in data]
-create_db()
-insert_db(upload_data)
+db_response = input('Do you want the weather data stored in a SQL database? Y/N: ').lower()
+if db_response in ('y', 'yes', 'yeah'):
+    create_db()
+    insert_db(upload_data)
+else:
+    print("Thank you for using my WeatherAPI!")

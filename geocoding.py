@@ -23,6 +23,7 @@ class GeoCoding:
         if self.result:
             self.lat = self.result[0]['lat']
             self.lon = self.result[0]['lon']
-            return {'lat':self.lat, 'lon':self.lon}
+            self.city = self.result[0]['name']
+            return {'city':self.city, 'lat':self.lat, 'lon':self.lon}
         else:
             return None

@@ -25,7 +25,7 @@ def insert_db(data_list):
     try:
         conn = sqlite3.connect('weatherapi_database.db')
         cursor = conn.cursor()
-        cursor.executemany("INSERT INTO weather_api (city, country, weather_desc, temperature, min_temperature, max_temperature, pressure, humidity, recorded_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", data_list)
+        cursor.execute("INSERT INTO weather_api (city, country, weather_desc, temperature, min_temperature, max_temperature, pressure, humidity, recorded_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", data_list)
         conn.commit()
         conn.close()
     except sqlite3.Error as e:

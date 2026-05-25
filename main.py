@@ -13,7 +13,7 @@ input_country = input("Please type the country code (eg. US, RO, FR, TR). This i
 input_country = input_country if input_country else None
 temp_coords = GeoCoding(input_city, input_country)
 coords = temp_coords.parsing()
-result = WeatherAPI(**coords, api= api_key)
+result = WeatherAPI(**coords, api=api_key)
 weather_data = result.show_result()
 if weather_data is not None:
     data.append(weather_data)

@@ -19,7 +19,6 @@ if weather_data is not None:
     data.append(weather_data)
 upload_data = [tuple(element.values()) for element in data]
 db_response = input('Do you want the weather data stored in SQL database? Y/N: ').lower()
-print(data)
 if db_response in ('y', 'yes', 'yeah'):
     create_db()
     insert_db(upload_data)
